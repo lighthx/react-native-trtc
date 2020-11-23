@@ -53,7 +53,7 @@ public class TRTCVideoView extends FrameLayout {
     public void setUid(String userId){
         surface.setUserId(userId);
         if(!"".equals(userId)){
-             getEngine().startRemoteView(userId, surface);
+            getEngine().startRemoteView(userId, surface);
         }else{
             getEngine().startLocalPreview(true, surface);
         }
@@ -87,6 +87,12 @@ public class TRTCVideoView extends FrameLayout {
         String userId = surface.getUserId();
         if("".equals(userId)){
             getEngine().stopLocalPreview();
+        }else{
+            if(isSub){
+                getEngine().stopRemoteSubStreamView(userId);
+            }else{
+                getEngine().stopRemoteView(userId);
+            }
         }
     }
 }
