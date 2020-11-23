@@ -18,12 +18,14 @@ public class TRTCVideoView extends FrameLayout {
 
     private boolean mLayoutEnqueued = false;
     private TXCloudVideoView surface;
-    private Boolean isSub =false;
+    private Boolean isSub = false;
+
     public TRTCVideoView(Context context) {
         super(context);
         surface = new TXCloudVideoView(context);
         addView(surface);
     }
+
     private final ChoreographerCompat.FrameCallback mLayoutCallback = new ChoreographerCompat.FrameCallback() {
         @Override
         public void doFrame(long frameTimeNanos) {
@@ -34,6 +36,7 @@ public class TRTCVideoView extends FrameLayout {
             layout(getLeft(), getTop(), getRight(), getBottom());
         }
     };
+
     @Override
     public void requestLayout() {
         super.requestLayout();
@@ -47,50 +50,54 @@ public class TRTCVideoView extends FrameLayout {
                     mLayoutCallback);
         }
     }
-    private TRTCCloud getEngine(){
+
+    private TRTCCloud getEngine() {
         return TRTCManager.getInstance().mTRTCCloud;
     }
-    public void setUid(String userId){
+
+    public void setUid(String userId) {
         surface.setUserId(userId);
-        if(!"".equals(userId)){
+        if (!"".equals(userId)) {
             getEngine().startRemoteView(userId, surface);
-        }else{
+        } else {
             getEngine().startLocalPreview(true, surface);
         }
     }
 
-    public void setSubUid(String subUid){
-        isSub=true;
-        surface.setUserId(subUid);
-        getEngine().startRemoteSubStreamView(subUid,surface);
+    public void setSubUid(String subUid) {
+        if (!subUid.equals("")) {
+            isSub = true;
+            surface.setUserId(subUid);
+            getEngine().startRemoteSubStreamView(subUid, surface);
+        }
     }
 
-    public void setRenderMode(int renderMode){
+    public void setRenderMode(int renderMode) {
         String userId = surface.getUserId();
-        if("".equals(userId)){
+        if ("".equals(userId)) {
             getEngine().setLocalViewFillMode(renderMode);
-        }else{
-            if(isSub){
-                getEngine().setRemoteAudioVolume(userId,renderMode);
-            }else{
+        } else {
+            if (isSub) {
+                getEngine().setRemoteAudioVolume(userId, renderMode);
+            } else {
                 getEngine().setRemoteViewFillMode(userId, renderMode);
             }
 
         }
     }
 
-    public void setMirrorMode(int mirrorMode){
+    public void setMirrorMode(int mirrorMode) {
         getEngine().setLocalViewMirror(mirrorMode);
     }
 
-    public void stopPlayView(){
+    public void stopPlayView() {
         String userId = surface.getUserId();
-        if("".equals(userId)){
+        if ("".equals(userId)) {
             getEngine().stopLocalPreview();
-        }else{
-            if(isSub){
+        } else {
+            if (isSub) {
                 getEngine().stopRemoteSubStreamView(userId);
-            }else{
+            } else {
                 getEngine().stopRemoteView(userId);
             }
         }
