@@ -3,7 +3,7 @@ import TRTCVideoView from './TRTCView';
 import PropTypes from 'prop-types';
 const TRTCView = memo((props)=>{
     return(
-        <TRTCVideoView {...props} uid=""/>
+        <TRTCVideoView {...props} uid="" subUid="" />
     )
 })
 TRTCView.propTypes = {

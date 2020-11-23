@@ -56,6 +56,12 @@
   if (!newSuperview) {
     if([@"" isEqual: _uid]&[@"" isEqual:_subUid]){
         [self.rtcEngine stopLocalPreview];
+    }else{
+        if([@"" isEqual: _uid]){
+            [self.rtcEngine stopRemoteSubStreamView:_subUid];
+        }else{
+            [self.rtcEngine stopRemoteView:_uid];
+        }
     }
   }
 }
