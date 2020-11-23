@@ -60,9 +60,9 @@ public class TRTCVideoView extends FrameLayout {
     }
 
     public void setSubUid(String subUid){
-        isSub=true
+        isSub=true;
         surface.setUserId(subUid);
-        getEngine().setRemoteSubStreamViewRotation(subUid,surface);
+        getEngine().startRemoteSubStreamView(subUid,surface);
     }
 
     public void setRenderMode(int renderMode){
